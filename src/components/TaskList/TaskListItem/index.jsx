@@ -9,11 +9,46 @@ import {
   IconButton,
   FormLabel,
   Checkbox,
+  Tooltip,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Editable,
+  EditablePreview,
+  EditableInput,
 } from "@chakra-ui/react";
 import { HistoryItem } from "./HistoryItem";
-import { FiMoreHorizontal, FiPlayCircle } from 'react-icons/fi'
+import { FiMoreHorizontal, FiPauseCircle, FiPlayCircle } from "react-icons/fi";
+import { useTasks } from "../../../hooks/tasks/useTasks";
+import { NoItemsInHistory } from "./NoItemsInHistory";
+import { calculateCummulativeTime } from "../../../utils/time";
+import { useClock } from "../../../hooks/clock/useClock";
+import MDEditor from "@uiw/react-md-editor";
 
-export const TaskListItem = () => {
+export const TaskListItem = ({ item }) => {
+  const {
+    updateTask,
+    deleteTask,
+    selectedTask,
+    setSelectedTask,
+  } = useTasks();
+
+  const {
+    clock: { isRunning },
+    toggleTimer,
+  } = useClock();
+
+  const toggleTimerWithItem = (evt) => {
+    evt.stopPropagation();
+
+    if (selectedTask?.id !== item.id) {
+      setSelectedTask(item.id);
+    }
+
+    toggleTimer();
+  }
+
   return (
     <AccordionItem
       borderTop="none"
@@ -27,34 +62,80 @@ export const TaskListItem = () => {
         borderTopRadius="8px"
         gap="10px"
       >
-        <Checkbox size="md" colorScheme="gray.300">
-          Task Name
-        </Checkbox>
+        <Flex>
+          <Checkbox
+            mr="8px"
+            size="md"
+            colorScheme="green"
+            isChecked={item.isCompleted}
+            onChange={(evt) =>
+              updateTask(item.id, { isCompleted: evt.target.checked })
+            }
+            textDecor={item.isCompleted ? "line-through" : "none"}
+          />
+          <Editable
+            value={item.name}
+            onChange={(evt) => updateTask(item.id, { name: evt })}
+            onFocus={(evt) => evt.stopPropagation()}
+            onClick={(evt) => evt.stopPropagation()}
+          >
+            <EditablePreview textDecor={item.isCompleted ? 'line-through' : 'none'}  />
+            <EditableInput textAlign="left" />
+          </Editable>
+        </Flex>
         <Flex alignItems="center" justifyContent="flex-end">
           <Text color="gray.300" fontSize="14px">
-            1h 30m
+            {calculateCummulativeTime(item.history)}
           </Text>
-          <IconButton
-            icon={<FiMoreHorizontal />}
-            variant="ghost"
-            colorScheme="black"
-            aria-label="More options"
-          />
-          <IconButton
-            icon={<FiPlayCircle />}
-            variant="ghost"
-            colorScheme="green"
-            aria-label="Start"
-            borderRadius="full"
-          />
+          <Menu>
+            <Tooltip label="More options">
+              <MenuButton
+                as={IconButton}
+                variant="ghost"
+                colorScheme="black"
+                aria-label="More options"
+                icon={<FiMoreHorizontal />}
+                onClick={e => e.stopPropagation()}
+              />
+            </Tooltip>
+            <MenuList onClick={(evt) => evt.stopPropagation()}>
+              <MenuItem
+                onClick={(evt) => {
+                  evt.stopPropagation();
+                  deleteTask(item.id);
+                }}
+              >
+                <Text
+                  fontSize="14px"
+                  color="red.500"
+                >
+                  Delete
+                </Text>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+          <Tooltip label="Start">
+            <IconButton
+              icon={isRunning && selectedTask?.id === item.id ? (
+                <FiPauseCircle />
+              ) : (
+                <FiPlayCircle />
+              )}
+              variant="ghost"
+              colorScheme={isRunning && selectedTask.id === item.id ? "red" : "green"}
+              aria-label="Start"
+              borderRadius="full"
+              onClick={toggleTimerWithItem}
+            />
+          </Tooltip>
         </Flex>
       </AccordionButton>
       <AccordionPanel display="flex" flexDir="column" gap="8px">
         <FormControl>
           <FormLabel fontWeight="bold">Description</FormLabel>
-          <Textarea
-            placeholder="Write a description for your task here."
-            rows="6"
+          <MDEditor
+            value={item.description}
+            onChange={(value) => updateTask(item.id, { description: value })}
           />
         </FormControl>
         <FormControl>
@@ -65,18 +146,10 @@ export const TaskListItem = () => {
             maxHeight="155px"
             overflowY="auto"
           >
-            <HistoryItem />
-            <HistoryItem />
-            <HistoryItem />
-            <HistoryItem />
-            <HistoryItem />
-            <HistoryItem />
-            <HistoryItem />
-            <HistoryItem />
-            <HistoryItem />
-            <HistoryItem />
-            <HistoryItem />
-            <HistoryItem />
+            {item.history.length === 0 && <NoItemsInHistory />}
+            {item.history.map((historyItem) => (
+              <HistoryItem item={historyItem} />
+            ))}
           </Flex>
         </FormControl>
       </AccordionPanel>
