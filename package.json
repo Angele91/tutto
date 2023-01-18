@@ -19,6 +19,7 @@
     "jotai": "^1.13.0",
     "jotai-immer": "^0.1.0",
     "lodash": "^4.17.21",
+    "parse-duration": "^1.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",

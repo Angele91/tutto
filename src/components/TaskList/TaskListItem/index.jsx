@@ -2,7 +2,6 @@ import {
   AccordionItem,
   AccordionButton,
   AccordionPanel,
-  Textarea,
   Text,
   Flex,
   FormControl,
@@ -17,6 +16,7 @@ import {
   Editable,
   EditablePreview,
   EditableInput,
+  Input,
 } from "@chakra-ui/react";
 import { HistoryItem } from "./HistoryItem";
 import { FiMoreHorizontal, FiPauseCircle, FiPlayCircle } from "react-icons/fi";
@@ -25,6 +25,12 @@ import { NoItemsInHistory } from "./NoItemsInHistory";
 import { calculateCummulativeTime } from "../../../utils/time";
 import { useClock } from "../../../hooks/clock/useClock";
 import MDEditor from "@uiw/react-md-editor";
+import duration from 'dayjs/plugin/duration';
+import dayjs from "dayjs";
+
+import parseDuration from 'parse-duration';
+
+dayjs.extend(duration);
 
 export const TaskListItem = ({ item }) => {
   const {
@@ -122,7 +128,7 @@ export const TaskListItem = ({ item }) => {
                 <FiPlayCircle />
               )}
               variant="ghost"
-              colorScheme={isRunning && selectedTask.id === item.id ? "red" : "green"}
+              colorScheme={isRunning && selectedTask?.id === item.id ? "red" : "green"}
               aria-label="Start"
               borderRadius="full"
               onClick={toggleTimerWithItem}
@@ -131,6 +137,21 @@ export const TaskListItem = ({ item }) => {
         </Flex>
       </AccordionButton>
       <AccordionPanel display="flex" flexDir="column" gap="8px">
+        <FormControl>
+          <FormLabel>
+            <Text fontWeight="bold">
+              Estimation
+            </Text>
+          </FormLabel>
+          <Input 
+            placeholder="Ex. 1h 30m"
+            value={item.estimation}
+            onChange={(evt) => updateTask(item.id, {
+              estimation: evt.target.value,
+              estimationInSeconds: parseDuration(evt.target.value, 's')
+            })}
+          />
+        </FormControl>
         <FormControl>
           <FormLabel fontWeight="bold">Description</FormLabel>
           <MDEditor
