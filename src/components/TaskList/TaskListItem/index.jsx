@@ -121,6 +121,7 @@ export const TaskListItem = ({ item }) => {
                 aria-label="More options"
                 icon={<FiMoreHorizontal />}
                 onClick={e => e.stopPropagation()}
+                mx="8px"
               />
             </Tooltip>
             <MenuList onClick={(evt) => evt.stopPropagation()}>

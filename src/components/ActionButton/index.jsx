@@ -1,4 +1,4 @@
-import { IconButton, useToast } from '@chakra-ui/react'
+import { IconButton, Tooltip, useToast } from '@chakra-ui/react'
 import { useCallback } from 'react';
 import { FiPauseCircle, FiPlayCircle } from 'react-icons/fi'
 import { useClock } from '../../hooks/clock/useClock'
@@ -6,7 +6,7 @@ import { useTasks } from '../../hooks/tasks/useTasks';
 
 export const ActionButton = () => {
   const {
-    clock: { isRunning },
+    clock: { isRunning, currentTick },
     toggleTimer
   } = useClock();
 
@@ -33,14 +33,16 @@ export const ActionButton = () => {
   }, [selectedTask, toggleTimer, toast])
 
   return (
-    <IconButton
-      icon={isRunning ? <FiPauseCircle /> : <FiPlayCircle />}
-      onClick={handleActionButtonClick}
-      variant="ghost"
-      fontSize="24px"
-      borderRadius="full"
-      colorScheme={isRunning ? "red" : "green"}
-      size="lg"
-    />
+    <Tooltip label={isRunning ? 'Pause' : currentTick > 0 ? 'Resume' : 'Start'}>
+      <IconButton
+        icon={isRunning ? <FiPauseCircle /> : <FiPlayCircle />}
+        onClick={handleActionButtonClick}
+        variant="ghost"
+        fontSize="24px"
+        borderRadius="full"
+        colorScheme={isRunning ? "red" : "green"}
+        size="lg"
+      />
+    </Tooltip>
   )
 }

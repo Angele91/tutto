@@ -51,7 +51,13 @@ export const TaskList = () => {
   }
 
   return (
-    <Card flexDirection="column" flex="1" p="20px">
+    <Card
+      flexDirection="column"
+      flex="1"
+      p="20px"
+      overflowY="auto"
+      maxH="85vh"
+    >
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
