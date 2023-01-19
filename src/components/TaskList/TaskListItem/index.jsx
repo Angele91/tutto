@@ -27,8 +27,10 @@ import { useClock } from "../../../hooks/clock/useClock";
 import MDEditor from "@uiw/react-md-editor";
 import duration from 'dayjs/plugin/duration';
 import dayjs from "dayjs";
+import { CSS } from '@dnd-kit/utilities';
 
 import parseDuration from 'parse-duration';
+import { useSortable } from "@dnd-kit/sortable";
 
 dayjs.extend(duration);
 
@@ -39,6 +41,19 @@ export const TaskListItem = ({ item }) => {
     selectedTask,
     setSelectedTask,
   } = useTasks();
+
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id: item.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
 
   const {
     clock: { isRunning },
@@ -60,6 +75,10 @@ export const TaskListItem = ({ item }) => {
       borderTop="none"
       borderBottom="1px solid"
       borderColor="gray.300"
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
     >
       <AccordionButton
         display="flex"

@@ -3,6 +3,7 @@ import { Chronometer } from "../Chronometer"
 import { ActionButton } from "../ActionButton"
 import { useTasks } from "../../hooks/tasks/useTasks"
 import CreatableSelect from 'react-select/creatable';
+import { CompleteTaskButton } from "../CompleteTaskButton";
 
 export const TopBar = () => {
   const {
@@ -24,9 +25,10 @@ export const TopBar = () => {
       as={Flex}
     >
       <CreatableSelect
+        key={selectedTask?.id || 'no-task-selected'}
         isClearable
         placeholder="Write a task..."
-        value={selectedTask && { value: selectedTask.id, label: selectedTask.name}}
+        value={selectedTask ? { value: selectedTask.id, label: selectedTask.name } : undefined}
         onCreateOption={(inputValue) => addTask({ newTask: inputValue })}
         onChange={(selectedOption) => {
           if (!selectedOption) {
@@ -42,13 +44,42 @@ export const TopBar = () => {
             ...provided,
             flex: 1,
           }),
+          input: (provided) => ({
+            ...provided,
+            color: 'white',
+          }),
+          control: (provided) => ({
+            ...provided,
+            backgroundColor: 'transparent',
+          }),
+          menu: (provided) => ({
+            ...provided,
+            // It's not taking the Chakra theme colors... Weird.
+            backgroundColor: '#4A5568',
+            color: 'white',
+          }),
+          option: (provided, state) => ({
+            ...provided,
+            color: 'white',
+            backgroundColor: state.isSelected || state.isFocused ? "#718096" : provided.backgroundColor,
+            '&:hover': {
+              backgroundColor: '#718096',
+            }
+          }),
+          singleValue: (provided) => ({
+            ...provided,
+            color: 'white',
+          }),
         }}
         components={{
           DropdownIndicator: null,
         }}
       />
       <Chronometer />
-      <ActionButton />
+      <Flex>
+        <ActionButton />
+        <CompleteTaskButton />
+      </Flex>
     </Card>
   )
 }

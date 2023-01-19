@@ -27,16 +27,19 @@ export const useTasks = () => {
     return tasks.list.length + 1;
   }
 
-  const updateTask = (taskId, updatedTask) => {
-    setTasks({
-      ...tasks,
-      list: tasks.list.map((task) => {
+  const updateTask = (taskId, updatedTask, options = {}) => {
+    const { clearSelectedTask } = options;
+    
+    setTasks((prevTasks) => ({
+      ...prevTasks,
+      selectedTaskId: clearSelectedTask ? undefined : prevTasks.selectedTaskId,
+      list: prevTasks.list.map((task) => {
         if (task.id === taskId) {
           return { ...task, ...updatedTask };
         }
         return task;
       }),
-    })
+    }))
   }
 
   const deleteTask = (taskId) => {

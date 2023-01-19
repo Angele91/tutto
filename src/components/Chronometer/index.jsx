@@ -27,7 +27,7 @@ export const Chronometer = () => {
         fontFamily="Inter"
         fontWeight="bold"
         width="50px"
-        color={isFarFromEstimation ? 'red.500' : 'black'}
+        color={isFarFromEstimation ? 'red.500' : 'white'}
       >
         {duration || '0:00'}
       </Text>
