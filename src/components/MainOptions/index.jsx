@@ -57,6 +57,7 @@ export const MainOptions = () => {
             </FormLabel>
             <Switch
               value={showCompletedTasks}
+              defaultChecked={showCompletedTasks}
               onChange={(evt) => setShowCompletedTasks(evt.target.checked)}
               id="show-completed-tasks"
               colorScheme="green"

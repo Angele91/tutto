@@ -1,9 +1,9 @@
-import { atom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 
-export const App = atom({
+export const App = atomWithStorage('app', {
   input: {
     mode: 'add-task',
     value: '',
   },
-  showCompletedTasks: false,
+  showCompletedTasks: true,
 });
