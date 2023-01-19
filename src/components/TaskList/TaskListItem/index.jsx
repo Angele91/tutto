@@ -75,10 +75,7 @@ export const TaskListItem = ({ item }) => {
       borderTop="none"
       borderBottom="1px solid"
       borderColor="gray.300"
-      ref={setNodeRef}
       style={style}
-      {...attributes}
-      {...listeners}
     >
       <AccordionButton
         display="flex"
@@ -86,6 +83,9 @@ export const TaskListItem = ({ item }) => {
         justifyContent="space-between"
         borderTopRadius="8px"
         gap="10px"
+        ref={setNodeRef}
+        {...attributes}
+        {...listeners}
       >
         <Flex>
           <Checkbox
