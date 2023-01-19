@@ -12,10 +12,15 @@ export const useApp = () => {
     setApp({ ...app, input: { mode: newMode } })
   }
 
+  const setShowCompletedTasks = (newVal) => {
+    setApp({ ...app, showCompletedTasks: newVal })
+  }
+
   return {
     app,
     setApp,
     setInputValue,
     setInputMode,
+    setShowCompletedTasks,
   }
 }

@@ -13,14 +13,22 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { useApp } from "../../hooks/app/useApp";
 import { useTasks } from "../../hooks/tasks/useTasks";
+import { Subtitle } from "../Subtitle";
 import { TaskListItem } from "./TaskListItem";
 
 export const TaskList = () => {
   const {
     tasks: { list, ...tasks },
+    completedTasks,
+    nonCompletedTasks,
     setTasks,
   } = useTasks();
+
+  const {
+    app: { showCompletedTasks },
+  } = useApp();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -46,34 +54,44 @@ export const TaskList = () => {
       setTasks({
         ...tasks,
         list: arrayMove(currentTasks, oldIndex, newIndex),
-      })
+      });
     }
-  }
+  };
 
   return (
-    <Card
-      flexDirection="column"
-      flex="1"
-      p="20px"
-      overflowY="auto"
-      maxH="85vh"
-    >
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-      >
-        <Accordion variant="unstyled" allowToggle>
+    <Card flexDirection="column" flex="1" p="20px" overflowY="auto" maxH="85vh">
+      <Accordion variant="unstyled" allowToggle>
+        {showCompletedTasks && (
+          <Subtitle>
+            To do
+          </Subtitle>
+        )}
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
           <SortableContext
             strategy={verticalListSortingStrategy}
             items={list.map((task) => task.id)}
           >
-            {list.map((task) => (
+            {nonCompletedTasks.map((task) => (
               <TaskListItem key={task.id} item={task} />
             ))}
           </SortableContext>
-        </Accordion>
-      </DndContext>
+        </DndContext>
+
+        {showCompletedTasks && completedTasks.length > 0 && (
+          <>
+            <Subtitle mt="8">
+              Completed
+            </Subtitle>
+            {completedTasks.map((task) => (
+              <TaskListItem key={task.id} item={task} />
+            ))}
+          </>
+        )}
+      </Accordion>
     </Card>
   );
 };

@@ -5,4 +5,5 @@ export const App = atom({
     mode: 'add-task',
     value: '',
   },
+  showCompletedTasks: false,
 });

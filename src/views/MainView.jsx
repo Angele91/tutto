@@ -4,6 +4,7 @@ import { NoTasks } from "../components/NoTasks"
 import { TaskList } from "../components/TaskList"
 import { useTasks } from "../hooks/tasks/useTasks"
 import { useEffect } from "react"
+import { MainOptions } from "../components/MainOptions"
 
 export const MainView = () => {
   const { tasks: { list } } = useTasks();
@@ -27,6 +28,7 @@ export const MainView = () => {
       h="100vh"
     >
       <TopBar />
+      <MainOptions />
       {list.length > 0 && <TaskList />}
       {list.length === 0 && <NoTasks />}
     </Flex>

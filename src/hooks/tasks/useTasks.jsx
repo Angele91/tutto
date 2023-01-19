@@ -77,6 +77,14 @@ export const useTasks = () => {
     return tasks.list.find((task) => task.id === tasks.selectedTaskId) ?? undefined;
   }, [tasks.list, tasks.selectedTaskId]);
 
+  const nonCompletedTasks = useMemo(() => {
+    return tasks.list.filter((task) => !task.isCompleted);
+  }, [tasks.list]);
+
+  const completedTasks = useMemo(() => {
+    return tasks.list.filter((task) => task.isCompleted);
+  }, [tasks.list]);
+
   return {
     addTask,
     updateTask,
@@ -85,5 +93,7 @@ export const useTasks = () => {
     selectedTask,
     tasks,
     setTasks,
+    completedTasks,
+    nonCompletedTasks,
   }
 }

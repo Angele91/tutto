@@ -105,7 +105,7 @@ export const TaskListItem = ({ item }) => {
             onClick={(evt) => evt.stopPropagation()}
           >
             <EditablePreview textDecor={item.isCompleted ? 'line-through' : 'none'}  />
-            <EditableInput textAlign="left" />
+            <EditableInput width="full" textAlign="left" />
           </Editable>
         </Flex>
         <Flex alignItems="center" justifyContent="flex-end">

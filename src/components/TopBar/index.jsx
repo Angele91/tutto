@@ -4,6 +4,7 @@ import { ActionButton } from "../ActionButton"
 import { useTasks } from "../../hooks/tasks/useTasks"
 import CreatableSelect from 'react-select/creatable';
 import { CompleteTaskButton } from "../CompleteTaskButton";
+import { useClock } from "../../hooks/clock/useClock";
 
 export const TopBar = () => {
   const {
@@ -12,6 +13,10 @@ export const TopBar = () => {
     setSelectedTask,
     selectedTask,
   } = useTasks()
+
+  const { 
+    startTimer,
+  } = useClock();
 
   return (
     <Card
@@ -29,7 +34,10 @@ export const TopBar = () => {
         isClearable
         placeholder="Write a task..."
         value={selectedTask ? { value: selectedTask.id, label: selectedTask.name } : undefined}
-        onCreateOption={(inputValue) => addTask({ newTask: inputValue })}
+        onCreateOption={(inputValue) => {
+          addTask({ newTask: inputValue })
+          startTimer()
+        }}
         onChange={(selectedOption) => {
           if (!selectedOption) {
             return setSelectedTask()
