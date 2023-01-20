@@ -4,7 +4,6 @@ import { ActionButton } from "../ActionButton"
 import { useTasks } from "../../hooks/tasks/useTasks"
 import CreatableSelect from 'react-select/creatable';
 import { CompleteTaskButton } from "../CompleteTaskButton";
-import { useClock } from "../../hooks/clock/useClock";
 
 export const TopBar = () => {
   const {
@@ -13,10 +12,6 @@ export const TopBar = () => {
     setSelectedTask,
     selectedTask,
   } = useTasks()
-
-  const { 
-    startTimer,
-  } = useClock();
 
   return (
     <Card

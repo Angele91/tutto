@@ -20,6 +20,7 @@ import {
 } from "@chakra-ui/react";
 import { HistoryItem } from "./HistoryItem";
 import { FiMoreHorizontal, FiPauseCircle, FiPlayCircle } from "react-icons/fi";
+import { MdDelete } from "react-icons/md";
 import { useTasks } from "../../../hooks/tasks/useTasks";
 import { NoItemsInHistory } from "./NoItemsInHistory";
 import { calculateCummulativeTime } from "../../../utils/time";
@@ -140,6 +141,19 @@ export const TaskListItem = ({ item }) => {
               </MenuItem>
             </MenuList>
           </Menu>
+          <Tooltip label="Delete task">
+            <IconButton 
+              icon={<MdDelete />}
+              variant="ghost"
+              colorScheme="red"
+              aria-label="Delete"
+              borderRadius="full"
+              onClick={(evt) => {
+                evt.stopPropagation();
+                deleteTask(item.id);
+              }}
+            />
+          </Tooltip>
           <Tooltip label="Start">
             <IconButton
               icon={isRunning && selectedTask?.id === item.id ? (
