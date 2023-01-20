@@ -5,9 +5,22 @@ import { TaskList } from "../components/TaskList"
 import { useTasks } from "../hooks/tasks/useTasks"
 import { useEffect } from "react"
 import { MainOptions } from "../components/MainOptions"
+import { useApp } from "../hooks/app/useApp"
 
 export const MainView = () => {
-  const { tasks: { list } } = useTasks();
+  const {
+    tasks: {
+      list
+    },
+    nonCompletedTasks
+  } = useTasks();
+
+  const {
+    app: {
+      showCompletedTasks,
+    }
+  } = useApp();
+
   const { setColorMode, colorMode } = useColorMode()
 
   useEffect(() => {
@@ -17,6 +30,16 @@ export const MainView = () => {
       setColorMode('dark')
     }
   }, [colorMode, setColorMode])
+
+  const getContent = () => {
+    const taskLength = showCompletedTasks ? list.length : nonCompletedTasks.length
+
+    if (taskLength === 0) {
+      return <NoTasks />
+    }
+
+    return <TaskList />
+  }
 
 
   return (
@@ -29,8 +52,7 @@ export const MainView = () => {
     >
       <TopBar />
       <MainOptions />
-      {list.length > 0 && <TaskList />}
-      {list.length === 0 && <NoTasks />}
+      {getContent()}
     </Flex>
   )
 }
