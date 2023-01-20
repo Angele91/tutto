@@ -154,7 +154,7 @@ export const TaskListItem = ({ item }) => {
               }}
             />
           </Tooltip>
-          <Tooltip label="Start">
+          <Tooltip label={isRunning && selectedTask?.id === item.id ? 'Pause' : 'Start'}>
             <IconButton
               icon={isRunning && selectedTask?.id === item.id ? (
                 <FiPauseCircle />
