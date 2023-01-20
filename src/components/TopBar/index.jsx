@@ -36,10 +36,6 @@ export const TopBar = () => {
         value={selectedTask ? { value: selectedTask.id, label: selectedTask.name } : undefined}
         onCreateOption={(inputValue) => {
           addTask({ newTask: inputValue, autoSelect: !selectedTask })
-
-          if (!selectedTask) {
-            startTimer()
-          }
         }}
         onChange={(selectedOption) => {
           if (!selectedOption) {
