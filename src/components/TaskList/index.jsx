@@ -13,6 +13,10 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import {
+  restrictToVerticalAxis,
+  restrictToWindowEdges,
+} from '@dnd-kit/modifiers';
 import { useApp } from "../../hooks/app/useApp";
 import { useTasks } from "../../hooks/tasks/useTasks";
 import { Subtitle } from "../Subtitle";
@@ -70,6 +74,7 @@ export const TaskList = () => {
           sensors={sensors}
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
+          modifiers={[restrictToWindowEdges, restrictToVerticalAxis]}
         >
           <SortableContext
             strategy={verticalListSortingStrategy}
