@@ -30,13 +30,16 @@ export const useClock = () => {
     })
   }
 
-  const stopTimer = () => {
+  const stopTimer = ({ skipAddToHistory } = {}) => {
     setClock((draft) => {
       draft.isRunning = false;
       draft.currentTick = 0;
     })
 
     clearInterval(clock.interval);
+
+    if (skipAddToHistory) return;
+    if (!selectedTask) return;
 
     updateTask(selectedTask.id, {
       duration: selectedTask.duration + clock.currentTick,
@@ -56,6 +59,11 @@ export const useClock = () => {
     } else {
       startTimer();
     }
+  }
+
+  const restartTimer = () => {
+    stopTimer();
+    startTimer();
   }
 
   const formattedTimer = useMemo(() => secondsToHoursAndMinutes(clock.currentTick || 0), [clock.currentTick])
@@ -85,6 +93,7 @@ export const useClock = () => {
     startTimer,
     stopTimer,
     toggleTimer,
+    restartTimer,
     formattedTimer,
     duration,
   }

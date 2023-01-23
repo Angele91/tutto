@@ -59,6 +59,8 @@ export const TaskListItem = ({ item }) => {
   const {
     clock: { isRunning },
     toggleTimer,
+    stopTimer,
+    restartTimer,
   } = useClock();
 
   const toggleTimerWithItem = (evt) => {
@@ -66,10 +68,23 @@ export const TaskListItem = ({ item }) => {
 
     if (selectedTask?.id !== item.id) {
       setSelectedTask(item.id);
+      restartTimer();
+      return;
     }
-
+    
     toggleTimer();
   }
+
+  const onDeleteTask = (evt) => {
+    evt.stopPropagation();
+    deleteTask(item.id);
+
+    if (selectedTask?.id === item.id && isRunning) {
+      stopTimer({
+        skipAddToHistory: true,
+      });
+    }
+  };
 
   return (
     <AccordionItem
@@ -127,10 +142,7 @@ export const TaskListItem = ({ item }) => {
             </Tooltip>
             <MenuList onClick={(evt) => evt.stopPropagation()}>
               <MenuItem
-                onClick={(evt) => {
-                  evt.stopPropagation();
-                  deleteTask(item.id);
-                }}
+                onClick={onDeleteTask}
               >
                 <Text
                   fontSize="14px"
@@ -148,10 +160,7 @@ export const TaskListItem = ({ item }) => {
               colorScheme="red"
               aria-label="Delete"
               borderRadius="full"
-              onClick={(evt) => {
-                evt.stopPropagation();
-                deleteTask(item.id);
-              }}
+              onClick={onDeleteTask}
             />
           </Tooltip>
           <Tooltip label={isRunning && selectedTask?.id === item.id ? 'Pause' : 'Start'}>
