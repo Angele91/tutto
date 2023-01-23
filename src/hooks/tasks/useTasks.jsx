@@ -10,13 +10,15 @@ export const useTasks = () => {
     newTaskDescription = '',
     autoSelect = true,
   }) => {
+    const newTaskId = Math.random().toString(36).substring(2, 9);
+
     setTasks({
       ...tasks,
-      selectedTaskId: autoSelect ? tasks.list.length + 1 : tasks.selectedTaskId,
+      selectedTaskId: autoSelect ? newTaskId : tasks.selectedTaskId,
       list: [
         ...tasks.list,
         {
-          id: tasks.list.length + 1,
+          id: newTaskId,
           name: newTask,
           description: newTaskDescription,
           history: [],
@@ -24,7 +26,7 @@ export const useTasks = () => {
       ]
     })
 
-    return tasks.list.length + 1;
+    return newTaskId;
   }
 
   const updateTask = (taskId, updatedTask, options = {}) => {
