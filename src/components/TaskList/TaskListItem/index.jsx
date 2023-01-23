@@ -202,8 +202,8 @@ export const TaskListItem = ({ item }) => {
             overflowY="auto"
           >
             {item.history.length === 0 && <NoItemsInHistory />}
-            {item.history.map((historyItem) => (
-              <HistoryItem item={historyItem} />
+            {item.history.map((historyItem, index) => (
+              <HistoryItem key={`history-item-${item.id}-${index}`} item={historyItem} />
             ))}
           </Flex>
         </FormControl>

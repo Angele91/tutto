@@ -6,6 +6,7 @@ import { useTasks } from "../hooks/tasks/useTasks"
 import { useEffect } from "react"
 import { MainOptions } from "../components/MainOptions"
 import { useApp } from "../hooks/app/useApp"
+import { Sidebar } from "../components/Sidebar"
 
 export const MainView = () => {
   const {
@@ -43,16 +44,19 @@ export const MainView = () => {
 
 
   return (
-    <Flex
-      gap="20px"
-      flexDir="column"
-      padding="20px"
-      w="100vw"
-      h="100vh"
-    >
-      <TopBar />
-      <MainOptions />
-      {getContent()}
+    <Flex h="96vh">
+      <Sidebar />
+      <Flex
+        gap="20px"
+        flexDir="column"
+        padding="20px"
+        w="100vw"
+        h="100vh"
+      >
+        <TopBar />
+        <MainOptions />
+        {getContent()}
+      </Flex>
     </Flex>
   )
 }
