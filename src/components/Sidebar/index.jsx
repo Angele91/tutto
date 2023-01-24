@@ -1,9 +1,11 @@
 import { Card, IconButton } from "@chakra-ui/react"
 import { useNavigate } from "@reach/router"
-import { FiBook, FiList } from "react-icons/fi"
+import { FiBook, FiBookmark, FiList } from "react-icons/fi"
 
 export const Sidebar = () => {
   const navigate = useNavigate();
+
+  const navigateTo = (path) => () => navigate(path);
 
   return (
     <Card ml="20px" h="full" width="80px" my="20px" p="4">
@@ -12,14 +14,21 @@ export const Sidebar = () => {
         variant="ghost"
         colorScheme="gray"
         mb="2"
-        onClick={() => navigate('/')}
+        onClick={navigateTo('/')}
+      />
+      <IconButton 
+        icon={<FiBookmark />}
+        variant="ghost"
+        colorScheme="gray"
+        mb="2"
+        onClick={navigateTo('/summary')}
       />
       <IconButton
         icon={<FiBook />}
         variant="ghost"
         colorScheme="gray"
         mb="2"
-        onClick={() => navigate('/notes')}
+        onClick={navigateTo('/notes')}
       />
     </Card>
   )

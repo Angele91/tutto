@@ -1,5 +1,7 @@
 import dayjs from "dayjs";
 import formatDuration from "format-duration";
+import { times } from "lodash";
+import { useCallback } from "react";
 import { useMemo } from "react"
 import { useTasks } from "../tasks/useTasks"
 
@@ -55,9 +57,32 @@ export const useStats = () => {
     return formatDuration(totalTimeToday * 1000);
   }, [allHistory])
 
+  const tasksDoneByUnitAndDate = useCallback(({ unit, date }) => {
+    return tasks.list.filter(task => {
+      return task.history.some(historyItem => {
+        return dayjs(historyItem.date).isSame(date, unit);
+      })
+    })
+  }, [tasks.list])
+
+  const tasksDoneInTheLast3Weeks = useMemo(() => {
+    return times(3).reduce((prev, curr) => {
+      const week = dayjs().startOf('week').subtract(curr, 'week');
+      const tasksDoneThisWeek = tasksDoneByUnitAndDate({ unit: 'week', date: week });
+
+      if (tasksDoneThisWeek?.length === 0) return prev;
+
+      return {
+        ...prev,
+        [week.format('YYYY-MM-DD')]: tasksDoneThisWeek,
+      }
+    }, {});
+  }, [tasksDoneByUnitAndDate])
+
   return {
     totalTimeThisMonth,
     totalTimeThisWeek,
     totalTimeToday,
+    tasksDoneInTheLast3Weeks,
   }
 }
