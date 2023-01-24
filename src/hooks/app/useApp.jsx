@@ -25,8 +25,8 @@ export const useApp = () => {
       ...app,
       summarySettings: {
         ...app.summarySettings,
-        unit: app.summarySettings.unit || "day",
-        amount: app.summarySettings.amount || 3,
+        unit: app.summarySettings?.unit || "day",
+        amount: app.summarySettings?.amount || 3,
       }
     },
     setApp,
