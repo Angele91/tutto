@@ -10,7 +10,20 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm install
-      - run: npm run build
-      - run: npm install -g surge
+      
+      - name: Install dependencies
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+      
+      - name: Build dist
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: build
+      
+      - name: Install surge
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: global add surge
+  
       - run: surge ./build ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
