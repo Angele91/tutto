@@ -21,7 +21,14 @@ export const useApp = () => {
   }
 
   return {
-    app,
+    app: {
+      ...app,
+      summarySettings: {
+        ...app.summarySettings,
+        unit: app.summarySettings.unit || "day",
+        amount: app.summarySettings.amount || 3,
+      }
+    },
     setApp,
     setInputValue,
     setInputMode,
