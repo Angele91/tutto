@@ -16,11 +16,16 @@ export const useApp = () => {
     setApp({ ...app, showCompletedTasks: newVal })
   }
 
+  const setSummarySettings = ({ unit, amount }) => {
+    setApp({ ...app, summarySettings: { ...app.summarySettings, unit, amount } })
+  }
+
   return {
     app,
     setApp,
     setInputValue,
     setInputMode,
     setShowCompletedTasks,
+    setSummarySettings,
   }
 }

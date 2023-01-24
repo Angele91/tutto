@@ -1,4 +1,4 @@
-import { Card, Flex, useDisclosure } from "@chakra-ui/react"
+import { Card, Flex, Tooltip, useDisclosure } from "@chakra-ui/react"
 import { useMemo, useState } from "react"
 import { Note } from "../components/Note"
 import { NoteModal } from "../components/NoteModal"
@@ -26,6 +26,15 @@ export const NotesView = () => {
     return list.find(item => item.id === openedNoteId);
   }, [list, openedNoteId]);
 
+  const onOpenNote = (item) => () => {
+    setOpenedNoteId(item.id)
+    onOpen()
+  }
+  const onAddNote = () => () => addNote({
+    title: 'New note',
+    body: '',
+  })
+
   return (
     <Flex h="96vh">
       <Sidebar />
@@ -51,30 +60,27 @@ export const NotesView = () => {
         >
           {list.map(item => (
             <Note 
+              key={item.id}
               item={item}
-              onClick={() => {
-                setOpenedNoteId(item.id);
-                onOpen();
-              }}
+              onClick={onOpenNote(item)}
             />
           ))}
-          <Card
-            as={Flex}
-            w="200px"
-            h="144px"
-            justifyContent="center"
-            alignItems="center"
-            fontSize="2xl"
-            fontWeight="bold"
-            userSelect="none"
-            cursor="pointer"
-            onClick={() => addNote({
-              title: 'New note',
-              body: '',
-            })}
-          >
-            +
-          </Card>
+          <Tooltip label="Add note">
+            <Card
+              as={Flex}
+              w="200px"
+              h="144px"
+              justifyContent="center"
+              alignItems="center"
+              fontSize="2xl"
+              fontWeight="bold"
+              userSelect="none"
+              cursor="pointer"
+              onClick={onAddNote()}
+            >
+              +
+            </Card>
+          </Tooltip>
         </Flex>
       </Flex>
     </Flex>

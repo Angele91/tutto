@@ -94,11 +94,11 @@ export const TaskListItem = ({ item }) => {
       style={style}
     >
       <AccordionButton
-        display="flex"
         flexDir="row"
         justifyContent="space-between"
         borderTopRadius="8px"
         gap="10px"
+        as={Flex}
         ref={setNodeRef}
         {...attributes}
         {...listeners}

@@ -1,6 +1,15 @@
-import { Card, IconButton } from "@chakra-ui/react"
+import { Card, IconButton, Tooltip } from "@chakra-ui/react"
 import { useNavigate } from "@reach/router"
+import { capitalize } from "lodash"
 import { FiBook, FiBookmark, FiList } from "react-icons/fi"
+
+const PAGES = ['tasks', 'summary', 'notes']
+
+const mapPageToIcons = {
+  tasks: <FiList />,
+  summary: <FiBookmark />,
+  notes: <FiBook />,
+}
 
 export const Sidebar = () => {
   const navigate = useNavigate();
@@ -9,27 +18,18 @@ export const Sidebar = () => {
 
   return (
     <Card ml="20px" h="full" width="80px" my="20px" p="4">
-      <IconButton 
-        icon={<FiList />}
-        variant="ghost"
-        colorScheme="gray"
-        mb="2"
-        onClick={navigateTo('/')}
-      />
-      <IconButton 
-        icon={<FiBookmark />}
-        variant="ghost"
-        colorScheme="gray"
-        mb="2"
-        onClick={navigateTo('/summary')}
-      />
-      <IconButton
-        icon={<FiBook />}
-        variant="ghost"
-        colorScheme="gray"
-        mb="2"
-        onClick={navigateTo('/notes')}
-      />
+      {PAGES.map((page) => (
+        <Tooltip label={capitalize(page)} key={page}>
+          <IconButton
+            icon={mapPageToIcons[page]}
+            variant="ghost"
+            colorScheme="gray"
+            mb="2"
+            onClick={navigateTo(page === 'tasks' ? '/' : `/${page}`)}
+            isActive={window.location.pathname === `/${page}`}
+          />
+        </Tooltip>
+      ))}
     </Card>
   )
 }

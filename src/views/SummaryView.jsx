@@ -1,15 +1,28 @@
 import { Accordion, Box, Card, Flex } from "@chakra-ui/react"
 import dayjs from "dayjs";
+import { useMemo } from "react";
 import { Sidebar } from "../components/Sidebar"
 import { Subtitle } from "../components/Subtitle";
+import { SummaryOptions } from "../components/SummaryOptions";
 import { TaskListItem } from "../components/TaskList/TaskListItem";
 import { TopBar } from "../components/TopBar";
+import { useApp } from "../hooks/app/useApp";
 import { useStats } from "../hooks/stats/useStats"
 
 export const SummaryView = () => {
   const { 
-    tasksDoneInTheLast3Weeks
+    getTasksDoneInTheLastXUnits,
   } = useStats();
+
+  const {
+    app: { summarySettings },
+  } = useApp();
+
+  const tasks = useMemo(() => {
+    return getTasksDoneInTheLastXUnits({
+      ...summarySettings,
+    })
+  }, [summarySettings, getTasksDoneInTheLastXUnits])
   
   return (
     <Flex h="96vh">
@@ -22,14 +35,15 @@ export const SummaryView = () => {
         h="100vh"
       >
         <TopBar />
+        <SummaryOptions />
         <Card flexDirection="column" flex="1" p="20px" overflowY="auto" maxH="85vh">
           <Accordion allowToggle>
-            {Object.keys(tasksDoneInTheLast3Weeks).map((weekFirstDay) => (
-              <Box mb="4" key={weekFirstDay}>
+            {Object.keys(tasks).map((firstDay) => (
+              <Box mb="4" key={firstDay}>
                 <Subtitle mb="4">
-                  Week of {dayjs(weekFirstDay).format('DD/MM/YYYY')} ({tasksDoneInTheLast3Weeks[weekFirstDay].length} tasks)
+                  {dayjs(firstDay).format('dddd, MMMM DD YYYY')} ({tasks[firstDay].length} tasks)
                 </Subtitle>
-                {tasksDoneInTheLast3Weeks[weekFirstDay].map((task) => (
+                {tasks[firstDay].map((task) => (
                   <TaskListItem key={task.id} item={task} />
                 ))}
               </Box>

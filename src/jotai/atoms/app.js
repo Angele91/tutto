@@ -5,5 +5,9 @@ export const App = atomWithStorage('app', {
     mode: 'add-task',
     value: '',
   },
+  summarySettings: {
+    unit: 'day',
+    amount: 3,
+  },
   showCompletedTasks: true,
 });

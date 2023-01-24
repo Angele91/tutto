@@ -65,24 +65,24 @@ export const useStats = () => {
     })
   }, [tasks.list])
 
-  const tasksDoneInTheLast3Weeks = useMemo(() => {
-    return times(3).reduce((prev, curr) => {
-      const week = dayjs().startOf('week').subtract(curr, 'week');
-      const tasksDoneThisWeek = tasksDoneByUnitAndDate({ unit: 'week', date: week });
-
-      if (tasksDoneThisWeek?.length === 0) return prev;
+  const getTasksDoneInTheLastXUnits = useCallback(({ unit, amount }) => {
+    return times(amount).reduce((prev, curr) => {
+      const date = dayjs().startOf(unit).subtract(curr, unit);
+      const tasksDoneThisUnit = tasksDoneByUnitAndDate({ unit, date });
+      
+      if (tasksDoneThisUnit?.length === 0) return prev;
 
       return {
         ...prev,
-        [week.format('YYYY-MM-DD')]: tasksDoneThisWeek,
+        [date.format('YYYY-MM-DD')]: tasksDoneThisUnit,
       }
     }, {});
-  }, [tasksDoneByUnitAndDate])
+  }, [tasksDoneByUnitAndDate]);
 
   return {
     totalTimeThisMonth,
     totalTimeThisWeek,
     totalTimeToday,
-    tasksDoneInTheLast3Weeks,
+    getTasksDoneInTheLastXUnits,
   }
 }
