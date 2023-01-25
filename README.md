@@ -2,7 +2,7 @@
 
 ![Logo!](https://tutto.surge.sh/android-chrome-192x192.png)
 
-Yet another To-Do App built with [React](https://reactjs.org/) and [Jotai](https://redux.js.org/).
+Yet another To-Do App built with [React](https://reactjs.org/) and [Jotai](https://jotai.org).
 
 [Try it out](https://tutto.surge.sh)
 
