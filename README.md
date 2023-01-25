@@ -14,6 +14,7 @@ Yet another To-Do App built with [React](https://reactjs.org/) and [Jotai](https
 - [x] Create, Edit, Delete Notes
 - [x] View history of tasks
 - [x] Summary of tasks with time spent on each X time unit
+- [ ] Custom fields
 - [ ] Task and note templates
 - [ ] Projects and workspaces
 - [ ] Javascript Modules
