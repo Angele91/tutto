@@ -56,7 +56,6 @@ export const TopBar = () => {
           }),
           menu: (provided) => ({
             ...provided,
-            // It's not taking the Chakra theme colors... Weird.
             backgroundColor: '#4A5568',
             color: 'white',
           }),

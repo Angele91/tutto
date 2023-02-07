@@ -32,6 +32,7 @@ import { CSS } from '@dnd-kit/utilities';
 
 import parseDuration from 'parse-duration';
 import { useSortable } from "@dnd-kit/sortable";
+import { useApp } from "../../../hooks/app/useApp";
 
 dayjs.extend(duration);
 
@@ -42,6 +43,10 @@ export const TaskListItem = ({ item }) => {
     selectedTask,
     setSelectedTask,
   } = useTasks();
+
+  const {
+    app: { customFields },
+  } = useApp();
 
   const {
     attributes,

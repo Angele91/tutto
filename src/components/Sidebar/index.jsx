@@ -1,7 +1,8 @@
-import { Card, IconButton, Tooltip } from "@chakra-ui/react"
+import { Card, Divider, IconButton, Tooltip } from "@chakra-ui/react"
 import { useNavigate } from "@reach/router"
 import { capitalize } from "lodash"
 import { FiBook, FiBookmark, FiList } from "react-icons/fi"
+import { CustomFieldModal } from "../CustomFieldModal"
 
 const PAGES = ['tasks', 'summary', 'notes']
 
@@ -30,6 +31,8 @@ export const Sidebar = () => {
           />
         </Tooltip>
       ))}
+      <Divider my="8" />
+      <CustomFieldModal />
     </Card>
   )
 }

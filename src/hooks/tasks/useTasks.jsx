@@ -22,6 +22,7 @@ export const useTasks = () => {
           name: newTask,
           description: newTaskDescription,
           history: [],
+          custom: {},
         }
       ]
     })
