@@ -26,30 +26,26 @@ import { NoItemsInHistory } from "./NoItemsInHistory";
 import { calculateCummulativeTime } from "../../../utils/time";
 import { useClock } from "../../../hooks/clock/useClock";
 import MDEditor from "@uiw/react-md-editor";
-import duration from 'dayjs/plugin/duration';
+import duration from "dayjs/plugin/duration";
 import dayjs from "dayjs";
-import { CSS } from '@dnd-kit/utilities';
+import { CSS } from "@dnd-kit/utilities";
 
-import parseDuration from 'parse-duration';
+import parseDuration from "parse-duration";
 import { useSortable } from "@dnd-kit/sortable";
+import { useApp } from "../../../hooks/app/useApp";
+import { CustomField } from "../../CustomField";
 
 dayjs.extend(duration);
 
 export const TaskListItem = ({ item }) => {
-  const {
-    updateTask,
-    deleteTask,
-    selectedTask,
-    setSelectedTask,
-  } = useTasks();
+  const { updateTask, deleteTask, selectedTask, setSelectedTask } = useTasks();
 
   const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({ id: item.id });
+    app: { customFields },
+  } = useApp();
+
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: item.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -71,9 +67,9 @@ export const TaskListItem = ({ item }) => {
       restartTimer();
       return;
     }
-    
+
     toggleTimer();
-  }
+  };
 
   const onDeleteTask = (evt) => {
     evt.stopPropagation();
@@ -120,11 +116,23 @@ export const TaskListItem = ({ item }) => {
             onFocus={(evt) => evt.stopPropagation()}
             onClick={(evt) => evt.stopPropagation()}
           >
-            <EditablePreview textDecor={item.isCompleted ? 'line-through' : 'none'}  />
+            <EditablePreview
+              textDecor={item.isCompleted ? "line-through" : "none"}
+            />
             <EditableInput width="full" textAlign="left" />
           </Editable>
         </Flex>
         <Flex alignItems="center" justifyContent="flex-end">
+          {customFields
+            .filter((customField) => customField.entityType === "tasks" && customField.inline)
+            .map((customField) => (
+              <CustomField
+                key={`custom-field-${customField.id}`}
+                entityId={item.id}
+                fieldId={customField.id}
+                mini
+              />
+            ))}
           <Text color="gray.300" fontSize="14px">
             {calculateCummulativeTime(item.history)}
           </Text>
@@ -136,25 +144,20 @@ export const TaskListItem = ({ item }) => {
                 colorScheme="black"
                 aria-label="More options"
                 icon={<FiMoreHorizontal />}
-                onClick={e => e.stopPropagation()}
+                onClick={(e) => e.stopPropagation()}
                 mx="8px"
               />
             </Tooltip>
             <MenuList onClick={(evt) => evt.stopPropagation()}>
-              <MenuItem
-                onClick={onDeleteTask}
-              >
-                <Text
-                  fontSize="14px"
-                  color="red.500"
-                >
+              <MenuItem onClick={onDeleteTask}>
+                <Text fontSize="14px" color="red.500">
                   Delete
                 </Text>
               </MenuItem>
             </MenuList>
           </Menu>
           <Tooltip label="Delete task">
-            <IconButton 
+            <IconButton
               icon={<MdDelete />}
               variant="ghost"
               colorScheme="red"
@@ -163,15 +166,23 @@ export const TaskListItem = ({ item }) => {
               onClick={onDeleteTask}
             />
           </Tooltip>
-          <Tooltip label={isRunning && selectedTask?.id === item.id ? 'Pause' : 'Start'}>
+          <Tooltip
+            label={
+              isRunning && selectedTask?.id === item.id ? "Pause" : "Start"
+            }
+          >
             <IconButton
-              icon={isRunning && selectedTask?.id === item.id ? (
-                <FiPauseCircle />
-              ) : (
-                <FiPlayCircle />
-              )}
+              icon={
+                isRunning && selectedTask?.id === item.id ? (
+                  <FiPauseCircle />
+                ) : (
+                  <FiPlayCircle />
+                )
+              }
               variant="ghost"
-              colorScheme={isRunning && selectedTask?.id === item.id ? "red" : "green"}
+              colorScheme={
+                isRunning && selectedTask?.id === item.id ? "red" : "green"
+              }
               aria-label="Start"
               borderRadius="full"
               onClick={toggleTimerWithItem}
@@ -182,19 +193,28 @@ export const TaskListItem = ({ item }) => {
       <AccordionPanel display="flex" flexDir="column" gap="8px">
         <FormControl>
           <FormLabel>
-            <Text fontWeight="bold">
-              Estimation
-            </Text>
+            <Text fontWeight="bold">Estimation</Text>
           </FormLabel>
-          <Input 
+          <Input
             placeholder="Ex. 1h 30m"
             value={item.estimation}
-            onChange={(evt) => updateTask(item.id, {
-              estimation: evt.target.value,
-              estimationInSeconds: parseDuration(evt.target.value, 's')
-            })}
+            onChange={(evt) =>
+              updateTask(item.id, {
+                estimation: evt.target.value,
+                estimationInSeconds: parseDuration(evt.target.value, "s"),
+              })
+            }
           />
         </FormControl>
+        {customFields
+          .filter((customField) => customField.entityType === "tasks" && !customField.inline)
+          .map((customField) => (
+            <CustomField
+              key={`custom-field-${customField.id}`}
+              entityId={item.id}
+              fieldId={customField.id}
+            />
+          ))}
         <FormControl>
           <FormLabel fontWeight="bold">Description</FormLabel>
           <MDEditor
@@ -212,7 +232,10 @@ export const TaskListItem = ({ item }) => {
           >
             {item.history.length === 0 && <NoItemsInHistory />}
             {item.history.map((historyItem, index) => (
-              <HistoryItem key={`history-item-${item.id}-${index}`} item={historyItem} />
+              <HistoryItem
+                key={`history-item-${item.id}`}
+                item={historyItem}
+              />
             ))}
           </Flex>
         </FormControl>

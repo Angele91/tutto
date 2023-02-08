@@ -9,5 +9,6 @@ export const App = atomWithStorage('app', {
     unit: 'day',
     amount: 3,
   },
+  customFields: [],
   showCompletedTasks: true,
 });

@@ -1,9 +1,61 @@
-import { Card, Flex } from "@chakra-ui/react"
-import { Chronometer } from "../Chronometer"
-import { ActionButton } from "../ActionButton"
-import { useTasks } from "../../hooks/tasks/useTasks"
-import CreatableSelect from 'react-select/creatable';
+import { Card, Flex } from "@chakra-ui/react";
+import { Chronometer } from "../Chronometer";
+import { ActionButton } from "../ActionButton";
+import { useTasks } from "../../hooks/tasks/useTasks";
+import CreatableSelect from "react-select/creatable";
 import { CompleteTaskButton } from "../CompleteTaskButton";
+
+export const topBarStylingProps = {
+  styles: {
+    container: (provided) => ({
+      ...provided,
+      flex: 1,
+    }),
+    input: (provided) => ({
+      ...provided,
+      color: "white",
+    }),
+    control: (provided) => ({
+      ...provided,
+      backgroundColor: "transparent",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: "#4A5568",
+      color: "white",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: "white",
+      backgroundColor:
+        state.isSelected || state.isFocused
+          ? "#718096"
+          : provided.backgroundColor,
+      "&:hover": {
+        backgroundColor: "#718096",
+      },
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: "white",
+    }),
+    multiValue: (provided) => ({
+      ...provided,
+      backgroundColor: "#718096",
+    }),
+    multiValueLabel: (provided) => ({
+      ...provided,
+      color: "white",
+    }),
+    multiValueRemove: (provided) => ({
+      ...provided,
+      color: "white",
+    }),
+  },
+  components: {
+    DropdownIndicator: null,
+  },
+};
 
 export const TopBar = () => {
   const {
@@ -11,7 +63,7 @@ export const TopBar = () => {
     addTask,
     setSelectedTask,
     selectedTask,
-  } = useTasks()
+  } = useTasks();
 
   return (
     <Card
@@ -25,57 +77,27 @@ export const TopBar = () => {
       as={Flex}
     >
       <CreatableSelect
-        key={selectedTask?.id || 'no-task-selected'}
+        key={selectedTask?.id || "no-task-selected"}
         isClearable
         placeholder="Write a task..."
-        value={selectedTask ? { value: selectedTask.id, label: selectedTask.name } : undefined}
+        value={
+          selectedTask
+            ? { value: selectedTask.id, label: selectedTask.name }
+            : undefined
+        }
         onCreateOption={(inputValue) => {
-          addTask({ newTask: inputValue, autoSelect: !selectedTask })
+          addTask({ newTask: inputValue, autoSelect: !selectedTask });
         }}
         onChange={(selectedOption) => {
           if (!selectedOption) {
-            return setSelectedTask()
+            return setSelectedTask();
           }
 
-          setSelectedTask(selectedOption.value)
+          setSelectedTask(selectedOption.value);
         }}
         options={list.map((task) => ({ value: task.id, label: task.name }))}
         inputId="task-select"
-        styles={{
-          container: (provided) => ({
-            ...provided,
-            flex: 1,
-          }),
-          input: (provided) => ({
-            ...provided,
-            color: 'white',
-          }),
-          control: (provided) => ({
-            ...provided,
-            backgroundColor: 'transparent',
-          }),
-          menu: (provided) => ({
-            ...provided,
-            // It's not taking the Chakra theme colors... Weird.
-            backgroundColor: '#4A5568',
-            color: 'white',
-          }),
-          option: (provided, state) => ({
-            ...provided,
-            color: 'white',
-            backgroundColor: state.isSelected || state.isFocused ? "#718096" : provided.backgroundColor,
-            '&:hover': {
-              backgroundColor: '#718096',
-            }
-          }),
-          singleValue: (provided) => ({
-            ...provided,
-            color: 'white',
-          }),
-        }}
-        components={{
-          DropdownIndicator: null,
-        }}
+        {...topBarStylingProps}
       />
       <Chronometer />
       <Flex>
@@ -83,5 +105,5 @@ export const TopBar = () => {
         <CompleteTaskButton />
       </Flex>
     </Card>
-  )
-}
+  );
+};
