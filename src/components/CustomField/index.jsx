@@ -1,14 +1,22 @@
+import { FormControl, FormLabel } from "@chakra-ui/react";
 import { useCustomField } from "../../hooks/app/useCustomField"
 import { useEntity } from "../../hooks/app/useEntity";
+import { InputField } from "./types/InputField";
+import { MarkdownField } from "./types/MarkdownField";
+import { MultiSelectField } from "./types/MultiSelectField";
 import { SelectField } from "./types/SelectField";
 
 const components = {
   select: SelectField,
+  text: InputField,
+  'multi-select': MultiSelectField,
+  markdown: MarkdownField,
 }
 
 export const CustomField = ({
   entityId,
-  fieldId
+  fieldId,
+  mini,
 }) => {
   const {
     id,
@@ -38,12 +46,22 @@ export const CustomField = ({
   const Component = components[type];
 
   return (
-    <Component
-      id={id}
-      name={name}
-      options={options}
-      value={value}
-      onChange={onChange}
-    />
+    <FormControl mr={mini ? '3' : 0}>
+      {!mini && (
+        <FormLabel>
+          {name}
+        </FormLabel>
+      )}
+      {Component && (
+        <Component
+          id={id}
+          name={name}
+          options={options}
+          value={value}
+          onChange={onChange}
+          mini={mini}
+        />
+      )}
+    </FormControl>
   )
 }

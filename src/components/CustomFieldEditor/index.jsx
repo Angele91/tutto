@@ -14,7 +14,6 @@ export const FIELD_TYPES = [
   'text',
   'select',
   'multi-select',
-  'file',
   'markdown',
 ]
 
@@ -51,7 +50,7 @@ export const CustomFieldEditor = () => {
       <Flex gap="2" flexDir="column">
         {shownCustomFields.map(
           (item) => (
-            <CustomFieldItem item={item} />
+            <CustomFieldItem key={item.id} item={item} />
           )
         )}
         <Tooltip label="Add Custom Field">

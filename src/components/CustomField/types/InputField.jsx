@@ -5,6 +5,7 @@ export const InputField = ({
   name,
   value,
   onChange,
+  mini,
 }) => {
   return (
     <Input
@@ -12,6 +13,10 @@ export const InputField = ({
       name={name}
       value={value}
       onChange={onChange}
+      size={mini ? 'xs' : 'md'}
+      placeholder={name}
+      onFocus={(evt) => evt.stopPropagation()}
+      onClick={(evt) => evt.stopPropagation()}
     />
   )
 }

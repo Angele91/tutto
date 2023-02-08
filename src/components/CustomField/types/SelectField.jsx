@@ -5,6 +5,7 @@ export const SelectField = ({
   options,
   value,
   onChange,
+  mini,
 }) => {
   return (
     <Select
@@ -12,6 +13,9 @@ export const SelectField = ({
       name={id}
       value={value}
       onChange={onChange}
+      size={mini ? 'xs' : 'md'}
+      onFocus={(evt) => evt.stopPropagation()}
+      onClick={(evt) => evt.stopPropagation()}
     >
       {options.map((option) => (
         <option key={option} value={option}>

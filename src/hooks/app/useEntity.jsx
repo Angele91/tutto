@@ -21,19 +21,19 @@ export const useEntity = (entityId, entityType) => {
 
   const entity = entities[entityType]?.find((item) => item.id === entityId);
 
-  const doUpdate = (data) => {
-    const updateFn = {
-      tasks: updateTask,
-      notes: updateNote,
-    }[entityType];
-
-    updateFn(entityId, data);
-  }
+  const updateFn = {
+    tasks: updateTask,
+    notes: updateNote,
+  }[entityType];
 
   const deleteFn = {
     tasks: deleteTask,
     notes: deleteNote,
   }[entityType];
+
+  const doUpdate = (data) => {
+    updateFn(entityId, data);
+  }
 
   const doDelete = () => {
     deleteFn(entityId);

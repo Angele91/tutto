@@ -37,7 +37,7 @@ export const CustomFieldModal = () => {
           <ModalHeader>
             Custom Fields
           </ModalHeader>
-          <ModalBody>
+          <ModalBody maxH="80vh" overflowY="auto">
             <CustomFieldEditor />
           </ModalBody>
         </ModalContent>

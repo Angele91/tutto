@@ -7,6 +7,7 @@ import {
   IconButton,
   Input,
   InputGroup,
+  Switch,
   Tooltip,
 } from "@chakra-ui/react";
 import { capitalize } from "lodash";
@@ -17,7 +18,7 @@ import { useApp } from "../../../hooks/app/useApp";
 import { Subtitle } from "../../Subtitle";
 
 export const CustomFieldItem = ({
-  item: { id, name, type, options = [] } = {},
+  item: { id, name, type, inline, options = [] } = {},
 }) => {
   const { updateCustomField, deleteCustomField } = useApp();
 
@@ -54,12 +55,14 @@ export const CustomFieldItem = ({
         </ButtonGroup>
         <IconButton icon={<FiTrash />} onClick={() => deleteCustomField(id)} />
       </Flex>
-      <Flex width="full">
+      <Flex flexDir="column" width="full">
         {(type === "select" || type === "multi-select") && (
           <Flex flexDir="column" gap="4" width="full">
             <Subtitle>Options</Subtitle>
             {options.map((option, index) => (
-              <FormControl key={index}>
+              <FormControl
+                key={option}
+              >
                 <InputGroup as={Flex} flexDir="row" gap="2">
                   <Input
                     value={option}
@@ -101,6 +104,15 @@ export const CustomFieldItem = ({
             </Tooltip>
           </Flex>
         )}
+        <FormControl mt="8">
+          <FormLabel>
+            Show inline
+          </FormLabel>
+          <Switch 
+            isChecked={inline}
+            onChange={(e) => updateCustomField(id, { inline: e.target.checked })}
+          />
+        </FormControl>
       </Flex>
     </Flex>
   );
