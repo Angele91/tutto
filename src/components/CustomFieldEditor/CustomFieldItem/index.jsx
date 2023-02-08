@@ -61,7 +61,7 @@ export const CustomFieldItem = ({
             <Subtitle>Options</Subtitle>
             {options.map((option, index) => (
               <FormControl
-                key={option}
+                key={`${id}-${index}`}
               >
                 <InputGroup as={Flex} flexDir="row" gap="2">
                   <Input

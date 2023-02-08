@@ -1,4 +1,5 @@
 import { FormControl, FormLabel } from "@chakra-ui/react";
+import { useMemo } from "react";
 import { useCustomField } from "../../hooks/app/useCustomField"
 import { useEntity } from "../../hooks/app/useEntity";
 import { InputField } from "./types/InputField";
@@ -43,7 +44,7 @@ export const CustomField = ({
     })
   }
 
-  const Component = components[type];
+  const Component = useMemo(() => components[type], [type]);
 
   return (
     <FormControl mr={mini ? '3' : 0}>
