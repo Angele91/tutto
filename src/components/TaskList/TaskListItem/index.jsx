@@ -13,9 +13,6 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  Editable,
-  EditablePreview,
-  EditableInput,
   Input,
 } from "@chakra-ui/react";
 import { HistoryItem } from "./HistoryItem";
@@ -82,6 +79,11 @@ export const TaskListItem = ({ item }) => {
     }
   };
 
+  const onChangeTaskName = (evt) => {
+    evt.stopPropagation();
+    updateTask(item.id, { name: evt.target.value });
+  };
+
   return (
     <AccordionItem
       borderTop="none"
@@ -110,17 +112,18 @@ export const TaskListItem = ({ item }) => {
             }
             textDecor={item.isCompleted ? "line-through" : "none"}
           />
-          <Editable
+          <Input 
             value={item.name}
-            onChange={(evt) => updateTask(item.id, { name: evt })}
+            border="none"
+            outline="none"
+            onChange={onChangeTaskName}
             onFocus={(evt) => evt.stopPropagation()}
             onClick={(evt) => evt.stopPropagation()}
-          >
-            <EditablePreview
-              textDecor={item.isCompleted ? "line-through" : "none"}
-            />
-            <EditableInput width="full" textAlign="left" />
-          </Editable>
+            onDrag={(evt) => evt.stopPropagation()}
+            textDecor={item.isCompleted ? "line-through" : "none"}
+            placeholder="Task name"
+            data-no-dnd="true"
+          />
         </Flex>
         <Flex alignItems="center" justifyContent="flex-end">
           {customFields

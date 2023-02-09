@@ -2,8 +2,6 @@ import { Card, Accordion } from "@chakra-ui/react";
 import {
   closestCenter,
   DndContext,
-  KeyboardSensor,
-  PointerSensor,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
@@ -21,6 +19,7 @@ import { useApp } from "../../hooks/app/useApp";
 import { useTasks } from "../../hooks/tasks/useTasks";
 import { Subtitle } from "../Subtitle";
 import { TaskListItem } from "./TaskListItem";
+import { KeyboardSensor, MouseSensor } from "../../vendor/DndSensors";
 
 export const TaskList = () => {
   const {
@@ -35,7 +34,7 @@ export const TaskList = () => {
   } = useApp();
 
   const sensors = useSensors(
-    useSensor(PointerSensor, {
+    useSensor(MouseSensor, {
       activationConstraint: {
         distance: 5,
       },
