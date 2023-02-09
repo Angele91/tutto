@@ -134,7 +134,7 @@ export const TaskListItem = ({ item }) => {
               />
             ))}
           <Text color="gray.300" fontSize="14px">
-            {calculateCummulativeTime(item.history)}
+            {calculateCummulativeTime(item.history || [])}
           </Text>
           <Menu>
             <Tooltip label="More options">

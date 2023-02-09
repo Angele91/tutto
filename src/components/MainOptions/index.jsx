@@ -1,4 +1,5 @@
 import {
+  Button,
   Card,
   Flex,
   FormControl,
@@ -10,12 +11,17 @@ import {
 import { FiEye } from "react-icons/fi";
 import { useApp } from "../../hooks/app/useApp";
 import { useStats } from "../../hooks/stats/useStats";
+import { useTasks } from "../../hooks/tasks/useTasks";
 
 export const MainOptions = () => {
   const {
     app: { showCompletedTasks },
     setShowCompletedTasks,
   } = useApp();
+
+  const { 
+    openTasksFilter,
+  } = useTasks();
 
   const {
     totalTimeThisMonth,
@@ -50,6 +56,16 @@ export const MainOptions = () => {
         </Flex>
       </Flex>
       <Flex>
+        <Tooltip label="Show tasks filter">
+          <Button
+            size="xs"
+            mx="2"
+            px="8"
+            onClick={openTasksFilter}
+          >
+            Filter
+          </Button>
+        </Tooltip>
         <Tooltip label="Show completed tasks">
           <FormControl display="flex" alignItems="center">
             <FormLabel htmlFor="show-completed-tasks" mb="0">

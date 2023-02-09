@@ -7,11 +7,12 @@ export const SelectField = ({
   onChange,
   mini,
 }) => {
+
   return (
     <Select
       id={id}
       name={id}
-      value={value}
+      value={value ?? options[0] ?? ''}
       onChange={onChange}
       size={mini ? 'xs' : 'md'}
       onFocus={(evt) => evt.stopPropagation()}
