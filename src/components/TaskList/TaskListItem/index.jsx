@@ -101,7 +101,7 @@ export const TaskListItem = ({ item }) => {
         {...attributes}
         {...listeners}
       >
-        <Flex>
+        <Flex width="45%">
           <Checkbox
             mr="8px"
             size="md"
